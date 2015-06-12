@@ -26,7 +26,7 @@ describe('Game of Life Widget', function () {
 	beforeEach(function () {
 		gameOfLife = SAMURAIPRINCIPLE.eventDispatcher(jasmine.createSpyObj('gameOfLife', ['tick', 'toggleCellState']));
 		widget = jQuery('#gameOfLifeWidget').clone().appendTo('body').gameOfLifeWidget(gameOfLife, 10, 10);
-	});
+	})
 	it('should call toggleCellState method when a table cell is clicked', function () {
 		widget.find('.grid tr:nth-child(4) td:nth-child(5)').click();
 
@@ -38,14 +38,14 @@ describe('Game of Life Widget', function () {
 		expect(gameOfLife.tick).toHaveBeenCalled();
 	});
 	it('should add class alive when cell becomes alive', function () {
-		gameOfLife.dispatchEvent('cellStateChanged', 3, 4);
+		gameOfLife.dispatchEvent('cellStateChanged', 3, 4, true);
 
 		expect(widget.find('.grid tr:nth-child(4) td:nth-child(5)').hasClass('alive')).toBe(true);
 	});
 	it('should remove class alive when cell dies', function () {
-		gameOfLife.dispatchEvent('cellStateChanged', 3, 4);
+		gameOfLife.dispatchEvent('cellStateChanged', 3, 4, true);
 
-		gameOfLife.dispatchEvent('cellStateChanged', 3, 4);
+		gameOfLife.dispatchEvent('cellStateChanged', 3, 4, false);
 
 		expect(widget.find('.grid tr:nth-child(4) td:nth-child(5)').hasClass('alive')).toBe(false);
 	});
@@ -53,7 +53,7 @@ describe('Game of Life Widget', function () {
 		gameOfLife = SAMURAIPRINCIPLE.eventDispatcher(jasmine.createSpyObj('gameOfLife', ['tick', 'toggleCellState']));
 		widget = jQuery('#gameOfLifeWidget').clone().appendTo('body').gameOfLifeWidget(gameOfLife, 10, 10, 250);
 
-		gameOfLife.dispatchEvent('cellStateChanged', 3, 4);
+		gameOfLife.dispatchEvent('cellStateChanged', 3, 4, true);
 
 		expect(widget.find('.grid tr:nth-child(4) td:nth-child(5)').hasClass('alive')).toBe(false);
 		setTimeout(function () {
@@ -75,11 +75,11 @@ describe('Game of Life Widget', function () {
 		gameOfLife = SAMURAIPRINCIPLE.eventDispatcher(jasmine.createSpyObj('gameOfLife', ['tick', 'toggleCellState']));
 		widget = jQuery('#gameOfLifeWidget').clone().appendTo('body').gameOfLifeWidget(gameOfLife, 10, 10, 250);
 
-		gameOfLife.dispatchEvent('cellStateChanged', 3, 4);
+		gameOfLife.dispatchEvent('cellStateChanged', 3, 4, true);
 
 		clock.tick(200);
 		expect(widget.find('.grid tr:nth-child(4) td:nth-child(5)').hasClass('alive')).toBe(false);
 		clock.tick(260);
-		expect(widget.find('.grid tr:nth-child(4) td:nth-child(5)').hasClass('alive')).toBe(true);
+		expect(widget.find('.grid tr:nth-child(4) td:nth-child(5)').hasClass('alive')).toBe(false);
 	});
 });

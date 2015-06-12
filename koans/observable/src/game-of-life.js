@@ -2,6 +2,9 @@
 var SAMURAIPRINCIPLE = SAMURAIPRINCIPLE || {};
 SAMURAIPRINCIPLE.GameOfLife = function () {
 	'use strict';
+    
+    SAMURAIPRINCIPLE.eventDispatcher(this);
+
 	var self = this,
 		isAlive = {},
 		cellKey = function (row, column) {
@@ -14,8 +17,10 @@ SAMURAIPRINCIPLE.GameOfLife = function () {
 		var key = cellKey(row, column);
 		if (isAlive[key]) {
 			delete isAlive[key];
+            this.dispatchEvent('cellStateChanged', row, column, false);
 		} else {
 			isAlive[key] = true;
+            this.dispatchEvent('cellStateChanged', row, column, true);
 		}
 		return this;
 	};
@@ -47,6 +52,20 @@ jQuery.fn.extend({
 		'use strict';
 		return this.each(function () {
 			var rootElement = jQuery(this);
+
+            //TODO: rewrite this to attach a hander to each cell and provide it's index when attached.
+            rootElement.find('td').click(function(e) {
+                //var row = rows/(e+1);
+                gameOfLife.toggleCellState(3,4,{});
+            });
+
+            rootElement.find('.tick').click(gameOfLife.tick);
+
+            gameOfLife.addEventListener('cellStateChanged', 
+                function(row, column, isAlive) {
+                    var cell = rootElement.find('.grid tr:nth-child(' + (row+1) + ') td:nth-child(' + (column+1) + ')');
+                    cell[isAlive ? 'addClass' : 'removeClass']('alive', animationDuration || 0);
+            }); 
 		});
 	}
 });
