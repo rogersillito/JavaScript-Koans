@@ -21,7 +21,7 @@ SAMURAIPRINCIPLE.GameOfLife = function() {
         if (world[row] === undefined) {
             world[row] = [];
         };
-    };self.isCellAlive(row,column)
+    };
 
     this.toggleCellState = function(row, column) {
         initialiseRow(row);
@@ -32,7 +32,7 @@ SAMURAIPRINCIPLE.GameOfLife = function() {
         }
         world[row][column] = !world[row][column];
         return self;
-    };self.isCellAlive(row,column)
+    };
 
     var getNumLiveNeighbours = function(row, column) {
         var count = 0;
