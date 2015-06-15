@@ -26,7 +26,7 @@ SAMURAIPRINCIPLE.Deferred = function() {
     };
 
     this.reject = function(argument) {
-        if (failedCallback) {
+        if (isRejected) {
             failedCallback(argument);
         }
         return this;
